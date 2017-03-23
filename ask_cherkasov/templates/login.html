@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Вход{% endblock %}
+
+{% block page_title %}Вход{% endblock %}
+
+{% block content %}
+  {% if errs %}
+    {% for i in errs %}
+      <div class="login-form-error">
+        <div class="alert alert-danger" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          Тестовая ошибка {{ i }}
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+  <div class="sign-in-form">
+    <form class="form-horizontal">
+      <form class="form-horizontal" method="post" action="">
+      {% csrf_token %}
+      <div class="form-group {% if errs %}has-error{% endif %}">
+        <label for="login" class="col-sm-2 control-label">Логин</label>
+        <div class="col-sm-6">
+          <input class="form-control" type="text" name="login" placeholder="Введите логин"></input>
+          {% if errs %}
+            Тестовая ошибка в поле ввода
+          {% endif %}
+        </div>
+      </div>
+      <div class="form-group {% if errs %}has-error{% endif %}">
+        <label for="password" class="col-sm-2 control-label">Пароль</label>
+        <div class="col-sm-6">
+          <input class="form-control" type="password" name="password" placeholder="Введите пароль"></input>
+          {% if errs %}
+            Тестовая ошибка в поле ввода
+          {% endif %}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-2">
+          <button type="submit" class="btn btn-primary">Войти</button>
+        </div>
+        <div class="col-sm-3">
+          <a href="{% url 'sign-up' %}" class="btn btn-default">Регистрация</a>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock %}

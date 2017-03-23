@@ -1,0 +1,15 @@
+sudo pip install virtualenvwrapper
+source /usr/ocal/bin/virtualenvwrapper.sh
+mkvirtualenv some-env
+workon some-env
+mkdir -p projs
+cd projs
+#django startproject ask_xxx
+#---
+#---
+pip install gunicorn
+cd ~projs/ask_xxx
+gunicorn ask_xxx.wsgi
+#---
+#---
+

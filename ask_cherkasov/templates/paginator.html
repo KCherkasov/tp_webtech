@@ -1,0 +1,27 @@
+<nav>
+  <ul class="pagination pagination-lg">
+    <li>
+      <a href="#" title="Пред.">
+        <span>&laquo;&laquo;</span>
+      </a>
+    </li>
+    {% for page in pages %}
+      {% if page == 1 %}
+        <li class="active">
+          <span>{{ page }}</span>
+        </li>
+      {% else %}
+        <li>
+          <a href="#">
+           <span>{{ page }}</span>
+          </a>
+        </li>
+      {% endif %}
+    {% endfor %}
+    <li>
+      <a href="#" title="След.">
+        <span>&raquo;&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>

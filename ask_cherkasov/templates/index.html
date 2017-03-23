@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block page_title %}
+    <div class="body-block">
+        <p class="small">Отсортировать вопросы &nbsp; <a class="btn btn-primary" href="#">По дате</a> <a class="btn btn-success" href="#">По рейтингу</a></p>
+        <hr />
+    </div>
+{% endblock %}
+
+{% block content %}
+
+  {% for i in questions %}
+    <div class="question question-{% if forloop.counter|divisibleby:2 %}white{% else %}grey{% endif %}">
+      <div class="question-info">
+        <div class="question-userpic-container">
+          <img src="../uploads/avatars/user-noavatar.gif" class="userpic" title="Аватар пользователя по умолчанию" />
+          <div class="small">Имя пользователя</div>
+        </div>
+        <div class="question-data">
+          <div class="question-title">
+            <a href="{% url 'question' %}">Тема вопроса</a>
+          </div>
+          <p class="question-text">Подробный текст вопроса</p>
+        </div>
+      </div>
+      <div class="question-controls">
+        <div class="question-vote">
+          <a class="btn btn-xs btn-danger" {% if not test_auth %} disabled="disabled" {% endif %}><span class="glyphicon glyphicon-thumbs-down"></span></a>
+          <span class="question-vote-count"> {{ '0123456789'|make_list|random }} </span>
+          <a class="btn btn-xs btn-success" {% if not test_auth %} disabled="disabled" {% endif %}><span class="glyphicon glyphicon-thumbs-up"></span></a>
+        </div>
+        <div class="question-ansref">
+          <a href="{% url 'question'%}">Ответы({{ '0123456789'|make_list|random }})</a>
+        </div>
+        <div class="tags question-tags">
+          {% for i in tags_count %}
+            {% with tag_color=012345|make_list|random %}
+            <a href="#" class="tags-tag tags-tag-{% if tag_color == '0' %}default{% elif tag_color == '1' %}primary{% elif tag_color == '2' %}success{% elif tag_color == '3' %}info{% elif tag_color == '4' %}danger{% else %}warning{% endif %}">Тег {{ i }}</a>
+            {% endwith %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  <div class="paginator-block" align="center">
+      {% include 'paginator.html' with pages='1234567' %}
+  </div>
+
+{% endblock %}
