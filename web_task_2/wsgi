@@ -1,0 +1,10 @@
+CONFIG = {
+  'mode' : 'wsgi',
+  'working_dir' : '/home/kvcherk/projects/Web/web_task_2',
+  'args' : (
+    '--bind=127.0.0.1:8082',
+    '--workers=2',
+    '--timeout=60',
+    'wsgi:application'
+  ),
+}
