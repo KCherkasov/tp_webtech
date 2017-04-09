@@ -13,30 +13,30 @@ Document Path:          /hello_world/
 Document Length:        17 bytes
 
 Concurrency Level:      10
-Time taken for tests:   5.331 seconds
+Time taken for tests:   5.815 seconds
 Complete requests:      1000
 Failed requests:        0
 Total transferred:      186000 bytes
 HTML transferred:       17000 bytes
-Requests per second:    187.58 [#/sec] (mean)
-Time per request:       53.310 [ms] (mean)
-Time per request:       5.331 [ms] (mean, across all concurrent requests)
-Transfer rate:          34.07 [Kbytes/sec] received
+Requests per second:    188.98 [#/sec] (mean)
+Time per request:       53.146 [ms] (mean)
+Time per request:       5.315 [ms] (mean, across all concurrent requests)
+Transfer rate:          31.24 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
-Connect:        0    0   0.8      0       8
-Processing:     8   53   9.7     49      99
-Waiting:        0   52   9.7     48      98
-Total:         15   53   9.7     49      99
+Connect:        0    0   0.1      0       3
+Processing:    46   58  16.8     50     151
+Waiting:       45   57  16.5     49     151
+Total:         46   58  16.9     50     152
 
 Percentage of the requests served within a certain time (ms)
-  50%     49
-  66%     51
-  75%     54
-  80%     55
-  90%     71
-  95%     76
-  98%     79
-  99%     85
- 100%     99 (longest request)
+  50%     50
+  66%     53
+  75%     59
+  80%     64
+  90%     79
+  95%     93
+  98%    118
+  99%    137
+ 100%    152 (longest request)
