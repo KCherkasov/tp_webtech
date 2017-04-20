@@ -6,8 +6,10 @@ from ask_cherkasov import views, settings
 urlpatterns = [
   url(r'^admin/', admin.site.urls, name="admin"),
   url(r'^base/', views.base, name="base"),
-  url(r'^index/', views.index, name="index"),
-  url(r'^question/', views.question, name="question"),
+  url(r'^$', views.newest, name="questions-new"),
+  url(r'^hot/', views.hottest, name="questions-hot"),
+  url(r'^tag/(?P<tag>.+)/', views.by_tag, name="tag"),
+  url(r'^question/(?P<id>\d+)/', views.question, name="question"),
   url(r'^ask/', views.ask, name="ask"),
   url(r'^login/', views.login, name="sign-in"),
   url(r'^signup/', views.signup, name="sign-up"),

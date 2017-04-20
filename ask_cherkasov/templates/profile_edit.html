@@ -81,7 +81,7 @@
       <div class="form-group {% if errs %}has-error{% endif %}">
         <label for="userpic" class="col-sm-2 control-label">Аватар</label>
         <div class="col-sm-5">
-          <img src="../uploads/avatars/user-noavatar.gif" class="userpic" />
+          <img src="{{ MEDIA_URL }}avatars/user-noavatar.gif" class="userpic" />
           <input name="userpic" type="file" class="sign-up-form-userpic-input"></input>
           {% if errs %}
             Тестовая ошибка в поле ввода

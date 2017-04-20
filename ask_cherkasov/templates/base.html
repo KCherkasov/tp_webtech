@@ -42,7 +42,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="{% url 'index' %}">AskCherkasov</a>
+              <a class="navbar-brand" href="{% url 'questions-new' %}">AskCherkasov</a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
               <ul class="nav navbar-nav">
@@ -58,13 +58,13 @@
                 {% if test_auth %}
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle user-img" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                      <img src="../uploads/avatars/user-noavatar.gif" class = "img-circle nav-avatar">
+                      <img src="{{ MEDIA_URL }}avatars/user-noavatar.gif" class = "img-circle nav-avatar">
                       <span id="user">Ник пользователя</span>
                       <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
                       <li><a href="{% url 'profile-edit' %}"><i class="glyphicon glyphicon-cog"></i>&nbsp;Редактировать профиль</a></li>
-                      <li><a href="{% url 'index' %}"><i class="glyphicon glyphicon-eject"></i>&nbsp;Выйти</a></li>
+                      <li><a href="{% url 'questions-new' %}"><i class="glyphicon glyphicon-eject"></i>&nbsp;Выйти</a></li>
                     </ul>
                   </li>
                 {% else %}
@@ -92,9 +92,7 @@
           </div>
           <div class="tags">
             {% for tag in hot_tags %}
-              {% with tag_color=012345|make_list|random %}
-              <a href="#" class="tags-tag tags-tag-{% if tag_color == '0' %}default{% elif tag_color == '1' %}primary{% elif tag_color == '2' %}success{% elif tag_color == '3' %}info{% elif tag_color == '4' %}danger{% else %}warning{% endif %}">Тег {{ tag }}</a>
-              {% endwith %}
+              <a href="{{ tag.get_url }}" class="tags-tag tags-tag-{{ tag.color }}">{{ tag.tag }}</a>
             {% endfor %}
           </div>
         </div>
