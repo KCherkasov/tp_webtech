@@ -52,13 +52,15 @@
                   </div>
                   <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-zoom-in"></span>&nbsp;Искать</button>
                 </form>
-                <li><button type="submit" class="btn btn-success navbar-btn" onclick="window.location.href='{% url 'ask' %}';">Cпросить!</button></li>
+                {% if request.user.is_authenticated %}
+                  <li><button type="submit" class="btn btn-success navbar-btn" onclick="window.location.href='{% url 'ask' %}';">Cпросить!</button></li>
+                {% endif %}
               </ul>
               <ul class="nav navbar-nav navbar-right">
-                {% if test_auth %}
+                {% if request.user.is_authenticated %}
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle user-img" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                      <img src="{{ MEDIA_URL }}avatars/user-noavatar.gif" class = "img-circle nav-avatar">
+                      <img src="{{ request.user.userdata.avatar_url }}" class = "img-circle nav-avatar">
                       <span id="user">Ник пользователя</span>
                       <b class="caret"></b>
                     </a>
@@ -92,7 +94,7 @@
           </div>
           <div class="tags">
             {% for tag in hot_tags %}
-              <a href="{{ tag.get_url }}" class="tags-tag tags-tag-{{ tag.color }}">{{ tag.tag }}</a>
+              <a href="{{ tag.get_url }}" class="tags-tag tags-tag-{{ tag.get_color_display }}">{{ tag.tag }}</a>
             {% endfor %}
           </div>
         </div>
@@ -104,7 +106,7 @@
             {% for user in best_users %}
               <li class="best-users-user">
                 <span class="best-users-user-pic"></span>
-                <span>&nbsp; Лучший пользователь {{ user }}</span>
+                <span>&nbsp; {{ user.user.first_name }} {{ user.user.last_name }} aka {{ user.user.username }}</span>
               </li>
             {% endfor %}
           </ol>

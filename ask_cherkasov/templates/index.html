@@ -15,8 +15,9 @@
     <div class="question question-{% if forloop.counter|divisibleby:2 %}white{% else %}grey{% endif %}">
       <div class="question-info">
         <div class="question-userpic-container">
-          <img src="{{ MEDIA_URL }}avatars/user-noavatar.gif" class="userpic" title="Аватар пользователя по умолчанию" />
-          <div class="small">Имя пользователя</div>
+          {% load static %}
+          <img src="{{ question.author.userdata.avatar_url }}" class="userpic" title="Аватар пользователя по умолчанию" />
+          <div class="small">{{ question.author.last_name }} {{ question.author.first_name }}</div>
         </div>
         <div class="question-data">
           <div class="question-title">
@@ -27,16 +28,16 @@
       </div>
       <div class="question-controls">
         <div class="question-vote">
-          <a class="btn btn-xs btn-danger" {% if not test_auth %} disabled="disabled" {% endif %}><span class="glyphicon glyphicon-thumbs-down"></span></a>
-          <span class="question-vote-count"> {{ question.rating }} </span>
-          <a class="btn btn-xs btn-success" {% if not test_auth %} disabled="disabled" {% endif %}><span class="glyphicon glyphicon-thumbs-up"></span></a>
+          <a class="btn btn-xs btn-danger" {% if not request.user.is_authenticated %} disabled="disabled" {% endif %}><span class="glyphicon glyphicon-thumbs-down"></span></a>
+          <span class="question-vote-count"> {{ question.likes }} </span>
+          <a class="btn btn-xs btn-success" {% if not request.user.is_authenticated %} disabled="disabled" {% endif %}><span class="glyphicon glyphicon-thumbs-up"></span></a>
         </div>
         <div class="question-ansref">
-          <a href="{{ question.get_url }}">Ответы({{ '0123456789'|make_list|random }})</a>
+          <a href="{{ question.get_url }}">Ответы ({{ question.ans_count }})</a>
         </div>
         <div class="tags question-tags">
-          {% for tag in question.tags %}
-            <a href="{{ tag.get_url }}" class="tags-tag tags-tag-{{ tag.color }}">{{ tag.tag }}</a>
+          {% for tag in question.tags.all %}
+            <a href="{{ tag.get_url }}" class="tags-tag tags-tag-{{ tag.get_color_display }}">{{ tag.tag }}</a>
           {% endfor %}
         </div>
       </div>

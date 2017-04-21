@@ -6,8 +6,8 @@
   <div class="question question-noborder">
     <div class="question-info">
       <div class="question-userpic-container">
-        <img src="{{ MEDIA_URL }}avatars/user-noavatar.gif" class="userpic" title="Аватар пользователя по умолчанию" />      
-        <div class="small">Имя пользователя</div>
+        <img src="{{ question.author.userdata.avatar_url }}" class="userpic" title="Аватар пользователя по умолчанию" />      
+        <div class="small">{{ question.author.last_name }} {{ question.author.first_name }}</div>
       </div>
       <div class="question-data">
         <div class="question-title-big">
@@ -18,24 +18,24 @@
     </div>
     <div class="question-controls">
       <div class="question-vote">
-        <a class="btn btn-xs btn-danger" {% if not test_auth %} disabled="disabled" {% endif %}><span class="glyphicon glyphicon-thumbs-down"></span></a>
-        <span class="question-vote-count"> {{ question.rating }} </span>
-        <a class="btn btn-xs btn-success" {% if not test_auth %} disabled="disabled" {% endif %}><span class="glyphicon glyphicon-thumbs-up"></span></a>
+        <a class="btn btn-xs btn-danger" {% if not request.user.is_authenticated %} disabled="disabled" {% endif %}><span class="glyphicon glyphicon-thumbs-down"></span></a>
+        <span class="question-vote-count"> {{ question.likes }} </span>
+        <a class="btn btn-xs btn-success" {% if not request.user.is_authenticated %} disabled="disabled" {% endif %}><span class="glyphicon glyphicon-thumbs-up"></span></a>
       </div>
       <div class="tags question-tags">
-        {% for tag in question.tags %}
-          <a href="{{ tag.get_url }}" class="tags-tag tags-tag-{{ tag.color }}">{{ tag.tag }}</a>
+        {% for tag in question.tags.all %}
+          <a href="{{ tag.get_url }}" class="tags-tag tags-tag-{{ tag.get_color_display }}">{{ tag.tag }}</a>
         {% endfor %}
       </div>
     </div>
     <hr />
     <div class="answers">
-      {% for answer in answers %}
+      {% for answer in question.answer_set.all %}
         <div class="answer answer-{% if forloop.counter|divisibleby:2 %}white{% else %}grey{% endif %}">
           <div class="answer-info">
             <div class="answer-userpic-container">
-              <img src="{{ MEDIA_URL }}avatars/user-noavatar.gif" class="userpic" title="Аватар пользователя по умолчанию" />
-              <div class="small">Имя пользователя</div>
+              <img src="{{ answer.author.userdata.avatar_url }}" class="userpic" title="Аватар пользователя по умолчанию" />
+              <div class="small">{{ answer.author.last_name }} {{ answer.author.first_name }}</div>
             </div>
             <div class="answer-data">
               <p class="answer-text">{{ answer.text }}</p>
@@ -43,19 +43,19 @@
           </div>
           <div class="answer-controls">
             <div class="answer-vote">
-              <a class="btn btn-xs btn-danger" {% if not test_auth %} disabled="disabled"{% endif %}><span class="glyphicon glyphicon-thumbs-down"></span></a>
-              <span class="answer-vote-count"> {{ answer.rating }} </span>
-              <a class="btn btn-xs btn-success" {% if not test_auth %} disabled="disabled"{% endif %}><span class="glyphicon glyphicon-thumbs-up"></span></a>
+              <a class="btn btn-xs btn-danger" {% if not request.user.is_authenticated %} disabled="disabled"{% endif %}><span class="glyphicon glyphicon-thumbs-down"></span></a>
+              <span class="answer-vote-count"> {{ answer.likes }} </span>
+              <a class="btn btn-xs btn-success" {% if not request.user.is_authenticated %} disabled="disabled"{% endif %}><span class="glyphicon glyphicon-thumbs-up"></span></a>
             </div>
             <div class="answer-correct">
-              <a class="btn btn-large {% if answer == correct %}answer-btn-correct{% else %}answer-btn-wrong{% endif %}" {% if not author_auth %}disabled="disabled"{% endif %}><span class="glyphicon glyphicon-ok">Правильный</span></a>
+              <a class="btn btn-large {% if answer.correct %}answer-btn-correct{% else %}answer-btn-wrong{% endif %}" {% if question.author.id != request.user.id %}disabled="disabled"{% endif %}><span class="glyphicon glyphicon-ok">Правильный</span></a>
             </div>
           </div>
         </div>
       {% endfor %}
     </div>
     <hr />
-    {% if test_auth %}
+    {% if request.user.is_authenticated %}
       <div class="answer-form">
         <div class="answer-form-title">Ваш ответ</div>
         <form class="form-horizontal" method="post" action="">
@@ -66,7 +66,7 @@
             </div>
           </div>
           <div class="form-group">
-            <div class="col sm-4">
+            <div class="col-sm-4">
               <button type="submit" class="btn btn-primary">Ответить</button>
             </div>
           </div>

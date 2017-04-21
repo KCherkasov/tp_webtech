@@ -144,11 +144,11 @@
   top: -1px;
 }
 
-.tags-tag-default-bg {
+.tags-tag-default {
   background-color: #777777;
 }
 
-.tags-tag-default-bg[href]:hover, .tags-tag-default-bg[href]:focus {
+.tags-tag-default[href]:hover, .tags-tag-default[href]:focus {
   background-color: #5E5E5E;
 }
 
@@ -259,6 +259,10 @@
   clear: both;
 }
 
+.question-info small, .question-info .small {
+  text-align: center;
+}
+
 .question-title {
   font-family: inherit;
   font-weight: 500;
@@ -299,10 +303,11 @@
 
 .question .question-userpic-container {
   width: 20%;
-  max-width: 130px;
+  min-width: 220px;
+  max-width: 300px;
   float: left;
-  margin-top: .5em;
   text-align: center;
+  margin-top: .5em;
 }
 
 .question .question-userpic-container .userpic {
@@ -314,15 +319,20 @@
 
 .question-data {
   margin-left: .7em;
-  width: 75%;
+  width: 65%;
   max-width: 700px;
   float: left;
   text-align: center;
 }
 
+.question-text {
+  text-align: left;
+}
+
 .question-controls {
   line-height: 2.4em;
   margin-top: 1em;
+  margin-left: 3em;
 }
 
 .question-controls:before, .question-controls:after {
@@ -430,6 +440,10 @@
   max-width: 700px;
   float: left;
   text-align: center;
+}
+
+.answer-text {
+  text-align: left;
 }
 
 .answer-vote {
@@ -574,6 +588,10 @@
 
 .answer-form-title small, .answer-form-title .small {
   font-size: 75%;
+}
+
+.answer-form {
+  margin-bottom: 2em;
 }
 
 .ask-form-error {
