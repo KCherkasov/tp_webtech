@@ -10,7 +10,8 @@ from django.db.models import Count, Sum
 from django.core.urlresolvers import reverse
 
 from random import choice
-from ask_cherkasov import settings
+from ask_cherkasov import settings, miscellaneous, mod_ajax
+from django.core.cache import cache
 
 import os
 
@@ -55,7 +56,7 @@ class TagManager(models.Manager):
 
   def get_top_X(self, top_size=10):
     real_top = top_size
-    return self.order_by_questions_count()[:real_top]
+    return self.order_by_questions_count().all()[:real_top]
 
 #---- Tags manager end ----#
 
@@ -68,7 +69,7 @@ class Tag(models.Model):
   RED = 'danger'
   LBLUE = 'info'
   COLORS = (('GR', GREEN), ('DB', DBLUE), ('B', BLACK), ('RE', RED), ('BL', LBLUE))
-    
+
   tag = models.CharField(max_length=30)
   color = models.CharField(max_length=2, choices=COLORS, default=BLACK)
 
@@ -99,7 +100,7 @@ class QuestionQueryset(models.QuerySet):
     return query
 
   def with_answers_count(self):
-    return self.annotate(ans_count=Count('answer__id', distinct = True))
+    return self.annotate(anscount = Count('answer__id', distinct = True))
 
   def with_author(self):
     return self.select_related('author').select_related('author__userdata')
@@ -132,9 +133,9 @@ class QuestionManager(models.Manager):
     query = self.queryset()
     return query.with_answers().get(pk = id)
 
-  def week_top(self):
-    prev_week = timezone.now() + datetime.timedelta(-7)
-    return self.queryset().hottest.with_date_later(prev_week)
+  def period_top(self, time_delta = -7):
+    period_start = timezone.now() + datetime.timedelta(time_delta)
+    return self.queryset().hottest().with_date_later(period_start)
 
 #---- Questions manager end ----#
 
@@ -156,7 +157,7 @@ class Question(models.Model):
   def correct_answer(self):
     try:
       answer = Answer.objects.get(question = self, correct = True)
-    except: 
+    except:
       answer = None
     return answer
 
@@ -204,11 +205,11 @@ class QuestionLikeManager(models.Manager):
 class QuestionLike(models.Model):
   class OwnLike(Exception):
     def __init__(self):
-      super(QuestionLike.OwnLike, self).__init__(u'Вы не можете голосовать за собственный вопрос')
+      super(QuestionLike.OwnLike, self).__init__('Вы не можете голосовать за собственный вопрос')
 
   class AlreadyLike(Exception):
     def __init__(self):
-      super(QuestionLike.AlreadyLike, self).__init__(u'Вы уже оценили этот вопрос')
+      super(QuestionLike.AlreadyLike, self).__init__('Вы уже оценили этот вопрос')
 
   LIKE = 1
   DISLIKE = -1
@@ -267,9 +268,9 @@ class AnswerManager(models.Manager):
       text += '...'
     return answer
 
-  def week_top(self):
-    prev_week = timezone.now() + datetime.timedelta(-7)
-    return self.queryset().hottest().with_date_later(prev_week)
+  def period_top(self, time_delta = -7):
+    period_start = timezone.now() + datetime.timedelta(time_delta)
+    return self.queryset().hottest().with_date_later(period_start)
 
 #---- Manager end ----#
 
@@ -348,7 +349,7 @@ class AnswerLike(models.Model):
   class AlreadyLike(Exception):
     def __init__(self):
       super(AnswerLike.AlreadyLike, self).__init__(u'Вы уже оценили этот вопрос')
-  
+
   LIKE = 1
   DISLIKE = -1
 
@@ -373,3 +374,53 @@ class AnswerLike(models.Model):
 
 #-- Answers end --#
 
+#-- caching --#
+
+class AppCacher:
+#---- tags caching ----#
+
+  POPULAR_TAGS = 'tags_popular'
+
+  @classmethod
+  def get_popular_tags(self):
+    return cache.get(AppCacher.POPULAR_TAGS, [])
+
+  @classmethod
+  def update_popular_tags(self):
+    popular = Tag.objects.get_top_X().all()
+    cache.set(AppCacher.POPULAR_TAGS, popular, 60*60*24)
+
+#---- tags caching end ----#
+
+#---- users caching ----#
+
+  BEST_USERS = 'users_best'
+
+  @classmethod
+  def get_best_users(self):
+    return cache.get(AppCacher.BEST_USERS, [])
+
+  @classmethod
+  def update_best_users(self):
+     TOP_X = 20
+     DAYS_VIEWED = -90
+
+     best_answers = Answer.objects.period_top(time_delta = DAYS_VIEWED)
+     best_questions = Question.objects.period_top(time_delta = DAYS_VIEWED)
+
+     users = {}
+
+     for ans in best_answers:
+       users[ans.author_id] = users.get(ans.author_id, 0) + ans.likes
+     for que in best_questions:
+       users[que.author_id] = users.get(que.author_id, 0) + que.likes
+
+     users = sorted(users, key = users.get)
+     users.reverse()
+     users = User.objects.filter(pk__in = users[:TOP_X])
+
+     cache.set(AppCacher.BEST_USERS, users, 60*60*24)
+
+#---- users caching end ----#
+
+#-- caching end --#

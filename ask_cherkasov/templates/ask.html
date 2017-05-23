@@ -5,48 +5,59 @@
 {% block page_title %}Задать вопрос{% endblock %}
 
 {% block content %}
-
-  {% if errs %}
-    {% for i in errs %}
-      <div class="ask-form-error">
-        <div class="alert alert-danger" role="alert">
-          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-          Тестовая ошибка {{ i }}
-        </div>
+  {% for err in form.non_field_errors %}
+    <div class="ask-form-error">
+      <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        {{ err }}
       </div>
-    {% endfor %}
-  {% endif %}
+    </div>
+  {% endfor %}
   <div class="ask-form">
     <form class="form-horizontal" method="post" action="">
       {% csrf_token %}
-      <div class="form-group {% if errs %}has-error{% endif %}">
-        <label for="title" class="col-sm-3 control-label">Тема вопроса</label>
+      <div class="form-group {% if form.title.errors %}has-error{% endif %}">
+        <label for="title" class="col-sm-3 control-label">{{ form.title.label }}</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" name="title" placeholder="Введите тему вопроса"></input>
-          {% if errs %}
-            Тестовая ошибка в поле ввода
+          {{ form. title }}
+          {% if form.title.errors %}
+            {% for err in form.title.errors %}
+              <div class="login-form-error">
+                <div class="alert alert-danger" role="alert">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  {{ err }}
+                </div>
+              </div>
+            {% endfor %}
           {% endif %}
         </div>
       </div>
-      <div class="form-group {% if errs %}has-error{% endif %}">
-        <label for="text" class="col-sm-3 control-label">Текст вопроса</label>
+      <div class="form-group {% if form.text.errors %}has-error{% endif %}">
+        <label for="text" class="col-sm-3 control-label">{{ form.text.label }}</label>
         <div class="col-sm-6">
-          <textarea class="form-control" name="title" placeholder="Введите текст вопроса"></textarea>
-          {% if errs %}
-            Тестовая ошибка в поле ввода
+          {{ form.text }}
+          {% if form.text.errors %}
+            {% for err in form.text.errors %}
+              <div class="login-form-error">
+                <div class="alert alert-danger" role="alert">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  {{ err }}
+                </div>
+              </div>
+            {% endfor %}
           {% endif %}
         </div>
       </div>
       <div class="form-group">
         <label for="tag" class=" col-sm-3 control-label">Теги</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control" name="tag1" placeholder="Тег"></input>
+          {{ form.tag1 }}
         </div>
         <div class="col-sm-2">
-          <input type="text" class="form-control" name="tag2" placeholder="Тег"></input>
+          {{ form.tag2 }}
         </div>
         <div class="col-sm-2">
-          <input type="text" class="form-control" name="tag3" placeholder="Тег"></input>
+          {{ form.tag3 }}
         </div>
       </div>
       <div class="form-group">

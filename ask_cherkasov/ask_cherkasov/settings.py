@@ -64,6 +64,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.media',
                 'django.contrib.messages.context_processors.messages',
+                'ask_cherkasov.context_processors.popular_tags',
+                'ask_cherkasov.context_processors.best_users',
             ],
         },
     },
@@ -81,7 +83,7 @@ DATABASES = {
         'NAME': 'ask_db',
         'USER': 'root',
         'PASSWORD' : 'kvcherk',
-        'PORT': 3030, 
+        'PORT': 3030,
     }
 }
 
@@ -132,3 +134,12 @@ STATICFILES_FINDERS = (
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = '/uploads/'
 
+LOGIN_URL = '/login/'
+
+CACHES = {
+  'default' : {
+    'BACKEND' : 'django.core.cache.backends.db.DatabaseCache',
+    'LOCATION' : 'cache',
+    'TIMEOUT' : 15,
+  }
+}

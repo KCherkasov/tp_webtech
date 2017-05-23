@@ -1,7 +1,7 @@
-from django.conf.urls import url
+from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf.urls.static import static
-from ask_cherkasov import views, settings
+from ask_cherkasov import views, settings, ajax_urls
 
 urlpatterns = [
   url(r'^admin/', admin.site.urls, name="admin"),
@@ -12,7 +12,9 @@ urlpatterns = [
   url(r'^question/(?P<id>\d+)/', views.question, name="question"),
   url(r'^ask/', views.ask, name="ask"),
   url(r'^login/', views.login, name="sign-in"),
+  url(r'^logout/', views.logout, name="sign-out"),
   url(r'^signup/', views.signup, name="sign-up"),
   url(r'^edit/', views.edit, name="profile-edit"),
   url(r'^hello_world/', views.hello_world, name="hello-world-sample"),
+  url(r'^ajax/', include(ajax_urls)),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

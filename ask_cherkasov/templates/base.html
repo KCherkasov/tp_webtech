@@ -61,12 +61,12 @@
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle user-img" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                       <img src="{{ request.user.userdata.avatar_url }}" class = "img-circle nav-avatar">
-                      <span id="user">Ник пользователя</span>
+                      <span id="user">{{ request.user.first_name }} {{ request.user.last_name }}</span>
                       <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
                       <li><a href="{% url 'profile-edit' %}"><i class="glyphicon glyphicon-cog"></i>&nbsp;Редактировать профиль</a></li>
-                      <li><a href="{% url 'questions-new' %}"><i class="glyphicon glyphicon-eject"></i>&nbsp;Выйти</a></li>
+                      <li><a href="{% url 'sign-out' %}?continue={{ request.path }}"><i class="glyphicon glyphicon-eject"></i>&nbsp;Выйти</a></li>
                     </ul>
                   </li>
                 {% else %}
@@ -106,7 +106,7 @@
             {% for user in best_users %}
               <li class="best-users-user">
                 <span class="best-users-user-pic"></span>
-                <span>&nbsp; {{ user.user.first_name }} {{ user.user.last_name }} aka {{ user.user.username }}</span>
+                <span>&nbsp; {{ user.first_name }} {{ user.last_name }} aka {{ user.username }}</span>
               </li>
             {% endfor %}
           </ol>
@@ -127,6 +127,7 @@
       <script src="{% static 'js/bootstrap.min.js' %}"></script>
       <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
       <script src="{% static 'js/alertify.min.js' %}"></script>
+      <script src="{% static 'js/common.js' %}"></script>
     {% endblock %}
   </body>
 </html>

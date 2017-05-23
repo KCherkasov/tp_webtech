@@ -28,12 +28,12 @@
       </div>
       <div class="question-controls">
         <div class="question-vote">
-          <a class="btn btn-xs btn-danger" {% if not request.user.is_authenticated %} disabled="disabled" {% endif %}><span class="glyphicon glyphicon-thumbs-down"></span></a>
-          <span class="question-vote-count"> {{ question.likes }} </span>
-          <a class="btn btn-xs btn-success" {% if not request.user.is_authenticated %} disabled="disabled" {% endif %}><span class="glyphicon glyphicon-thumbs-up"></span></a>
+          <a class="btn btn-xs btn-danger" {% if not request.user.is_authenticated %} disabled="disabled" {% endif %} data-question-like-down="{{ question.id }}"><span class="glyphicon glyphicon-thumbs-down"></span></a>
+          <span class="question-vote-count" data-question-like-count="{{ question.id }}"> {{ question.likes }} </span>
+          <a class="btn btn-xs btn-success" {% if not request.user.is_authenticated %} disabled="disabled" {% endif %} data-question-like-up="{{ question.id }}"><span class="glyphicon glyphicon-thumbs-up"></span></a>
         </div>
         <div class="question-ansref">
-          <a href="{{ question.get_url }}">Ответы ({{ question.ans_count }})</a>
+          <a href="{{ question.get_url }}">Ответы ({{ question.anscount }})</a>
         </div>
         <div class="tags question-tags">
           {% for tag in question.tags.all %}

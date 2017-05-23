@@ -5,8 +5,11 @@ def paginate(objects, request, key=''):
 
   key = key + '_page'
 
+  OBJS_PER_PAGE = 8
+  PAGES_LEFT_RIGHT = 4
+
   page = request.GET.get(key)
-  paginator = Paginator(objects, 8)
+  paginator = Paginator(objects, OBJS_PER_PAGE)
 
   try:
     result = paginator.page(page)
@@ -15,8 +18,8 @@ def paginate(objects, request, key=''):
   except PageNotAnInteger:
     result = paginator.page(1)
 
-  result.from_left = result.number - 4
-  result.from_right = result.number + 4
+  result.from_left = result.number - PAGES_LEFT_RIGHT
+  result.from_right = result.number + PAGES_LEFT_RIGHT
   result.key = key
 
   return result

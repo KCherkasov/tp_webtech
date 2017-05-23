@@ -16,10 +16,10 @@ class Command(BaseCommand):
     count = int(options['count'])
     for i in range(0, count):
       user = User()
-      
-      user.username = 'Bot_' + str(i)
-      user.first_name = 'Testbot_' + str(i % 19)
-      user.last_name = 'Fakeuser_' + str(i % 23)
+      user.save()
+      user.username = 'Bot_' + str(user.id)
+      user.first_name = 'Testbot_' + str(user.id % 19)
+      user.last_name = 'Fakeuser_' + str(user.id % 23)
       user.email = 'botmail_' + str(i) + '@mail.ru'
       user.password = make_password('Imabot')
       user.is_active = True
