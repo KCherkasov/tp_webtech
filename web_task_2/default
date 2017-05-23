@@ -12,8 +12,8 @@ upstream backend {
 server {
   listen 80 default_server;
   server_name nginx;
-  root /home/kvcherk/projects/Web/ask_cherkasov;
   location ^~ /uploads/ {
+    root /home/kvcherk/projects/Web/ask_cherkasov;
     gzip on;
     gzip_comp_level 6;
     expires modified 1d;
